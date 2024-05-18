@@ -5,6 +5,7 @@ function Home() {
 
     return (
         <main>
+            hello
             <SearchBar />
             <GifResult />
         </main>
