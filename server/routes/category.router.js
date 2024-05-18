@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// Add multiple categories
+// Add multiple categories to a favorite
 router.post("/", (req, res) => {
   const favoriteId = req.body.favorite; // id of associated favorite
   const categoryIds = req.body.categories; // This will be an array of category ids
@@ -37,5 +37,23 @@ router.post("/", (req, res) => {
       res.sendStatus(500);
     })
 })
+
+// delete categories from table
+router.delete("/:id", (req, res) => {
+  const id = req.params.id;
+  const sqlText = `
+    DELETE FROM "categories"
+    WHERE "id" = $1;
+  `;
+  pool
+    .query(queryText, [id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("Error in category delete router:", error);
+    })
+})
+
 
 module.exports = router;
