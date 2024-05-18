@@ -7,7 +7,19 @@ import axios from 'axios';
 // Add generator functions here
 
 
-
+/**
+ * Function to add multiple categories
+ */
+function* addRelations() {
+    const payload = action.payload;
+    try{
+        yield call(axios.post("/api/categories",payload));
+        // refresh store
+    }
+    catch(error){
+        console.log("Error in addRelations generator:", error);
+    }
+}
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
@@ -16,14 +28,14 @@ const sagaMiddleware = createSagaMiddleware();
 
 // Adding rootSaga to listen for saga actions
 function* rootSaga() {
+    yield takeEvery ("ADD_CATEGORIES", addRelations);
 
 };
 
 // Creating a store for all of the components to use
 const storeInstance = createStore(
     combineReducers({
-
-
+        
     }),
     // Adding sagaMiddleware to the store
     applyMiddleware(sagaMiddleware, logger),
