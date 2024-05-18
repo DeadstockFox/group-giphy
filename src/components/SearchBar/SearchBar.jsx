@@ -2,7 +2,7 @@ function SearchBar() {
 
     return (
         <>
-        
+            
         </>
     )
 }
