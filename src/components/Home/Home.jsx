@@ -4,11 +4,10 @@ import GifResult from "../GifResult/GifResult";
 function Home() {
 
     return (
-        <main>
-            hello
+        <div>
             <SearchBar />
             <GifResult />
-        </main>
+        </div>
     )
 }
 
