@@ -3,6 +3,10 @@ const app = express();
 const favoriteRouter = require('./routes/favorite.router');
 const categoryRouter = require('./routes/category.router');
 const PORT = process.env.PORT || 5001;
+const axios = require('axios');
+
+// adding environment variable
+require('dotenv').config()
 
 /** ---------- MIDDLEWARE ---------- **/
 app.use(express.json());
