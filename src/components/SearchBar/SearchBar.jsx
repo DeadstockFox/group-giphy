@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, TextField } from '@mui/material';
-
+import { Box, Button, TextField } from '@mui/material';
+import { useState } from "react";
 
 function SearchBar() {
     const dispatch = useDispatch();
+    const [searchTerm, setSearchTerm] = useState("");
 
     // Sending search term to saga to be used in API request
     const getSearch = (searchTerm) => {
@@ -11,12 +12,10 @@ function SearchBar() {
         console.log(searchTerm);
     }
 
-    handleChange = (e) => {
-        
-    }
-
-    handleSubmit = (e) => {
-
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch({ type: 'FETCH_GIF', payload: searchTerm });
+        console.log(searchTerm);
     }
 
     return (
@@ -26,9 +25,16 @@ function SearchBar() {
                     type="text"
                     name="searchTerm"
                     value={searchTerm}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                    }}
                     label="Search"
                     required />
+                <Button 
+                    type="submit"
+                    variant="contained">
+                    Submit
+                </Button>
             </form>
         </Box>
     )
