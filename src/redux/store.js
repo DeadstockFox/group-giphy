@@ -23,6 +23,32 @@ function* fetchGif(action) {
     }
 }
 
+/**
+ * Function to delete favorites
+ */
+function* deleteFavorite(action) {
+    const id = action.payload.id;
+    try {
+        yield call(axios.delete(`/api/favorites/${id}`))
+        // refresh store     
+    } catch(error) {
+        console.log( "Error in deleteFavorite generator:", error);
+    }
+}
+
+/**
+ * Function to add multiple categories
+ */
+function* addRelations(action) {
+    const payload = action.payload;
+    try {
+        yield call(axios.post("/api/categories",payload));
+        // refresh store
+    } catch(error) {
+        console.log("Error in addRelations generator:", error);
+    }
+}
+
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
@@ -39,7 +65,8 @@ const gif = (state = [], action) => {
 // Adding rootSaga to listen for saga actions
 function* rootSaga() {
     yield takeEvery('FETCH_GIF', fetchGif);
-
+    yield takeEvery ("ADD_CATEGORIES", addRelations);
+    yield takeEvery ("DELETE_FAVORITE", deleteFavorite);
 };
 
 // Creating a store for all of the components to use
