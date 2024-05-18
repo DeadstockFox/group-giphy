@@ -23,6 +23,43 @@ function* fetchGif(action) {
     }
 }
 
+/**
+ * Function to delete favorites
+ */
+function* deleteFavorite(action) {
+    const id = action.payload.id;
+    try {
+        yield call(axios.delete(`/api/favorites/${id}`))
+        // refresh store     
+    } catch(error) {
+        console.log( "Error in deleteFavorite generator:", error);
+    }
+}
+
+/**
+ * Function to add multiple categories
+ */
+function* addRelations(action) {
+    const payload = action.payload;
+    try {
+        yield call(axios.post("/api/categories",payload));
+        // refresh store
+    } catch(error) {
+        console.log("Error in addRelations generator:", error);
+    }
+}
+
+function* getCategories() {
+    try {
+        const categoryResponse = yield axios.get('/api/categories');
+        yield put({
+            type: 'SET_CATEGORIES',
+            payload: categoryResponse.data
+        });
+    } catch (error) {
+        console.log('get categoreis error:', error);
+      }}
+
 // Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
@@ -38,15 +75,26 @@ const gif = (state = [], action) => {
 
 // Adding rootSaga to listen for saga actions
 function* rootSaga() {
+    yield takeEvery('GET_CATEGORIES', getCategories);
     yield takeEvery('FETCH_GIF', fetchGif);
-
+    yield takeEvery ("ADD_CATEGORIES", addRelations);
+    yield takeEvery ("DELETE_FAVORITE", deleteFavorite);
 };
+
+const categories = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_CATEGORIES':
+            return action.payload;
+        default:
+            return state;
+    }
+}
 
 // Creating a store for all of the components to use
 const storeInstance = createStore(
     combineReducers({
+        categories,
         gif,
-
     }),
     // Adding sagaMiddleware to the store
     applyMiddleware(sagaMiddleware, logger),
