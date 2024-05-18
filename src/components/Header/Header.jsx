@@ -3,7 +3,7 @@ function Header() {
 
     return(
         <>
-        <h1>Giphy Search!</h1>
+        <h1>It's "Gif" not "Jif"</h1>
         </>
     )
 }
