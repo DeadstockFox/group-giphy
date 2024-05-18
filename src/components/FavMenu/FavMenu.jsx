@@ -13,6 +13,10 @@ function FavMenu() {
     const categories = useSelector(store => store.categories)
     const dispatch = useDispatch();
 
+    const addCategory = (event) => {
+        setFavCategory(event.target.value)
+    }
+
     useEffect(() => {
         dispatch({ type: 'GET_CATEGORIES'})
     }, [])
@@ -27,6 +31,7 @@ function FavMenu() {
                     value={favCategory}
                     renderValue={(selected) => selected.join(', ')}
                     input={<OutlinedInput label="Tag" />}
+                    onChange={addCategory}
                 >
                     {categories.map(cat => {
                         return (
