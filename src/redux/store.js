@@ -4,6 +4,13 @@ import createSagaMiddleware from 'redux-saga';
 import { takeEvery, put } from 'redux-saga/effects';
 import axios from 'axios';
 
+/**
+ * redux reducer to contain all user input
+ * @param {object} state  object
+ * @param {object} action contains type and may contain payload
+ * @returns new state object
+ */
+
 // Add generator functions here
 
 
