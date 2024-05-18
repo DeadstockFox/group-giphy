@@ -30,7 +30,7 @@ function* deleteFavorite(action) {
     const id = action.payload.id;
     try {
         yield call(axios.delete(`/api/favorites/${id}`))
-        // refresh store     
+        yield put({type: 'GET_CATEGORIES'});    
     } catch(error) {
         console.log( "Error in deleteFavorite generator:", error);
     }
@@ -43,9 +43,22 @@ function* addRelations(action) {
     const payload = action.payload;
     try {
         yield call(axios.post("/api/categories",payload));
-        // refresh store
+        yield put({type: 'GET_CATEGORIES'});
     } catch(error) {
         console.log("Error in addRelations generator:", error);
+    }
+}
+
+/**
+ * Function to delete categories
+ */
+function* deleteCategory(action) {
+    const id = action.payload.id;
+    try {
+        yield call(axios.delete(`/api/categories/${id}`));
+        yield put({type: 'GET_CATEGORIES'});
+    } catch(error) {
+        console.log("Error in delete category redux:", error);
     }
 }
 
@@ -79,6 +92,7 @@ function* rootSaga() {
     yield takeEvery('FETCH_GIF', fetchGif);
     yield takeEvery ("ADD_CATEGORIES", addRelations);
     yield takeEvery ("DELETE_FAVORITE", deleteFavorite);
+    yield takeEvery ("DELETE_CATEGORY", deleteCategory);
 };
 
 const categories = (state = [], action) => {
